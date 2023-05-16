@@ -34,7 +34,7 @@ function Home() {
 
     const verbsFound = VERBS.filter(v => v.verbName === verb.verbName)
     const forms = verbsFound.map(v => v.form)
-    if (forms.includes(verb.form)) {
+    if (forms.includes(formSelected.form)) {
       setFeedback('success')
     } else {
       setFeedback('error')
