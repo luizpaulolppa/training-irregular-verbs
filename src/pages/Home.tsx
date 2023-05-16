@@ -32,7 +32,9 @@ function Home() {
     const formSelected = formsOption.find((form) => form.selected)
     if (!formSelected) return
 
-    if (formSelected.form === verb.form) {
+    const verbsFound = VERBS.filter(v => v.verbName === verb.verbName)
+    const forms = verbsFound.map(v => v.form)
+    if (forms.includes(verb.form)) {
       setFeedback('success')
     } else {
       setFeedback('error')
