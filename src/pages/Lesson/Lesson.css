@@ -1,11 +1,11 @@
-.page-container {
+.lesson-page-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
 }
 
-.container {
+.lesson-page-container .container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -29,6 +29,7 @@
 .header .close-container p {
   font-size: 16px;
   font-weight: 600;
+  color: #1cb0f6;
 }
 
 .header .close-container svg {
@@ -80,6 +81,7 @@
   border: 0;
   font-size: 18px;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .correct {

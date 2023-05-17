@@ -5,18 +5,7 @@ type Verb = {
   form: Form
 }
 
-export function getFormName(form: Form): string {
-  switch (form) {
-    case 'inf':
-      return 'Infinitive'
-    case 'pp':
-      return 'Past participle'
-    case 'ps':
-      return 'Past simple'
-  }
-}
-
-export const VERBS: Verb[] = [
+const VERBS: Verb[] = [
   {
     verbName: "be",
     form: "inf"
@@ -947,3 +936,50 @@ export const VERBS: Verb[] = [
   }
 ]
 
+export function getFormName(form: Form): string {
+  switch (form) {
+    case 'inf':
+      return 'Infinitive'
+    case 'pp':
+      return 'Past participle'
+    case 'ps':
+      return 'Past simple'
+  }
+}
+
+export function getAllCorrectVerbsChosen(): Verb[] {
+  const correctVerbsChosen: Verb[] = JSON.parse(localStorage.getItem('@correctVerbsChosen') || '[]')
+  return correctVerbsChosen
+}
+
+export function addCorrectVerbChosen(verb: Verb) {
+  const correctVerbsChosen: Verb[] = getAllCorrectVerbsChosen()
+  correctVerbsChosen.push(verb)
+  localStorage.setItem('@correctVerbsChosen', JSON.stringify(correctVerbsChosen))
+}
+
+export function getAllVerbs(): Verb[] {
+  return VERBS
+}
+
+export function getMoreVerbs(): Verb[] {
+  const correctVerbsChosen: Verb[] = getAllCorrectVerbsChosen()
+  const verbNames = correctVerbsChosen.map((vc) => vc.verbName)
+  const allVerbs = getAllVerbs().filter((v) => !verbNames.includes(v.verbName))
+  if (allVerbs.length <= 20) {
+    return allVerbs
+  }
+  const shuffledVerbs = shuffleVerbs(allVerbs)
+  const verbs = shuffledVerbs.slice(0, 20)
+  return verbs
+}
+
+console.log(getMoreVerbs())
+
+function shuffleVerbs(arr: any): Verb[] {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}

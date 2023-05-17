@@ -1,8 +1,9 @@
 import { GrClose } from 'react-icons/gr'
 
-import './Home.css'
+import './Lesson.css'
 import { useState } from 'react'
-import { VERBS, getFormName } from '../verbs'
+import { addCorrectVerbChosen, getAllVerbs, getFormName, getMoreVerbs } from '../../store'
+import { useNavigate } from 'react-router-dom'
 
 type FormOption= {
   name: string
@@ -10,9 +11,13 @@ type FormOption= {
   form: 'inf' | 'ps' | 'pp'
 }
 
-function Home() {
+const allVerbs = getMoreVerbs()
+
+function Lesson() {
+  const navigate = useNavigate()
   const [feedback, setFeedback] = useState<'initial' | 'success' | 'error'>('initial')
-  const [verbs, setVerbs] = useState(VERBS)
+
+  const [verbs, setVerbs] = useState(allVerbs)
   const [contOfCompleted, setContOfCompleted] = useState(0)
   const [formsOption, setFormsOption] = useState<FormOption[]>([
     { name: 'Infinitive', form: 'inf', selected: false },
@@ -32,10 +37,11 @@ function Home() {
     const formSelected = formsOption.find((form) => form.selected)
     if (!formSelected) return
 
-    const verbsFound = VERBS.filter(v => v.verbName === verb.verbName)
+    const verbsFound = getAllVerbs().filter(v => v.verbName === verb.verbName)
     const forms = verbsFound.map(v => v.form)
     if (forms.includes(formSelected.form)) {
       setFeedback('success')
+      addCorrectVerbChosen(verb)
     } else {
       setFeedback('error')
     }
@@ -51,20 +57,19 @@ function Home() {
     newVerbs = newVerbs.reverse()
 
     if (!newVerbs.length) {
-      setVerbs(VERBS)
-      setContOfCompleted(0)
+      navigate('/')
     } else {
       setVerbs(newVerbs)
     }
   }
 
   return (
-    <div className="page-container">
+    <div className="lesson-page-container">
       <div className="container">
         <div className="header">
           <div className="close-container">
-            <p>{contOfCompleted} of {VERBS.length}</p>
-            <GrClose size={30} color="#bababa" />
+            <p>{contOfCompleted} of {allVerbs.length}</p>
+            <GrClose size={30} color="#bababa" onClick={() => navigate('/')} />
           </div>
           <h1>Choose the tense of "{verb.verbName}":</h1>
         </div>
@@ -104,4 +109,4 @@ function Home() {
   )
 }
 
-export default Home
+export default Lesson
