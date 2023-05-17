@@ -952,6 +952,10 @@ export function getAllCorrectVerbsChosen(): Verb[] {
   return correctVerbsChosen
 }
 
+export function clearCorrectVerbsChosen() {
+  localStorage.setItem('@correctVerbsChosen', '[]')
+}
+
 export function addCorrectVerbChosen(verb: Verb) {
   const correctVerbsChosen: Verb[] = getAllCorrectVerbsChosen()
   correctVerbsChosen.push(verb)
@@ -967,14 +971,13 @@ export function getMoreVerbs(): Verb[] {
   const verbNames = correctVerbsChosen.map((vc) => vc.verbName)
   const allVerbs = getAllVerbs().filter((v) => !verbNames.includes(v.verbName))
   if (allVerbs.length <= 20) {
+    clearCorrectVerbsChosen()
     return allVerbs
   }
   const shuffledVerbs = shuffleVerbs(allVerbs)
   const verbs = shuffledVerbs.slice(0, 20)
   return verbs
 }
-
-console.log(getMoreVerbs())
 
 function shuffleVerbs(arr: any): Verb[] {
   for (let i = arr.length - 1; i > 0; i--) {
